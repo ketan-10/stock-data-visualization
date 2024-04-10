@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import {
   createChart,
   type IChartApi,
@@ -156,11 +156,5 @@ watch(
 </script>
 
 <template>
-  <div class="lw-chart" ref="chartContainer"></div>
+  <div class="lw-chart h-full" ref="chartContainer"></div>
 </template>
-
-<style scoped>
-.lw-chart {
-  height: 100%;
-}
-</style>

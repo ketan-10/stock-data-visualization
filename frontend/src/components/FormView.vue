@@ -3,9 +3,8 @@ import { computed, reactive, ref } from 'vue'
 import InputComp from './ui/InputComp.vue'
 import SelectComp from './ui/SelectComp.vue'
 import ButtonComp from './ui/ButtonComp.vue'
-import type { ChartResponse } from '@/lib/utils'
+import type { ChartResponse } from '@/Constants'
 
-// state management
 const props = defineProps<{
   isLoading: boolean
 }>()
@@ -24,7 +23,7 @@ const isLoading = computed({
   }
 })
 
-// -- form logic
+// form logic
 const formData = reactive({
   symbol: {
     value: '',
@@ -96,7 +95,7 @@ const period = [
 <template>
   <form
     @submit.prevent="submitForm"
-    class="py-2 px-6 flex gap-5 max-w-3xl items-center self-center flex-wrap justify-center"
+    class="py-2 px-6 flex gap-x-5 max-w-3xl items-center self-center flex-wrap justify-center"
   >
     <div class="w-60 flex-grow">
       <label

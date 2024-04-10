@@ -5,7 +5,7 @@ import Sun from '@/assets/icons/sun.svg?raw'
 import Moon from '@/assets/icons/moon.svg?raw'
 import Github from '@/assets/icons/github.svg?raw'
 
-const isDarkMode: Ref<boolean> = inject('isDarkMode', ref(!!localStorage.getItem('isDarkMode')))
+const isDarkMode: Ref<boolean> = inject('isDarkMode', ref(false))
 
 watch(isDarkMode, (lightsPlz) => {
   if (lightsPlz) {

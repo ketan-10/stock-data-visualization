@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList } from '@headlessui/vue'
-import { computed } from 'vue'
 
 const props = defineProps<{
   modelValue?: string

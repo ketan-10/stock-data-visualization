@@ -2,30 +2,23 @@
 import RenderChart from './components/charts/RenderChart.vue'
 import FormView from './components/FormView.vue'
 import HeaderView from './components/HeaderView.vue'
-import { provide, reactive, ref, watch } from 'vue'
-import type { ChartResponse } from './lib/utils'
-import { genSeededData } from './api/generator'
+import { provide, ref } from 'vue'
+import type { ChartResponse } from '@/Constants'
 import TabComp from './components/ui/TabComp.vue'
 
 const isDarkMode = ref(!!localStorage.getItem('isDarkMode'))
 
 provide('isDarkMode', isDarkMode)
 
-watch(isDarkMode, (newMode) => {
-  console.log(newMode)
-})
-
 const isChartLoading = ref(false)
 
 const TABS = ['candlestick', 'line']
 const currentChart = ref('candlestick')
 
-const chartData = ref<ChartResponse[] | null>([])
+const chartData = ref<ChartResponse[]>([])
 
 const onChartData = (data: ChartResponse[]) => {
   chartData.value = data
-  console.log('Parent Data: ', data)
-  // console.log('Parent Generated Data: ', genSeededData(true))
 }
 </script>
 
@@ -39,9 +32,8 @@ const onChartData = (data: ChartResponse[]) => {
       <div class="w-full md:w-80 self-center mb-5">
         <TabComp v-model="currentChart" :tabs="TABS" />
       </div>
-      <!-- <RenderChart :myData="chartData" /> -->
-      <div v-if="!!chartData">
-        <RenderChart :serverData="chartData" />
+      <div v-if="chartData.length">
+        <RenderChart :serverData="chartData" :chartType="currentChart" />
       </div>
     </div>
   </div>
