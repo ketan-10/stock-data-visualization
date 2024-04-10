@@ -28,8 +28,7 @@ function getChartSeriesConstructorName(type: string) {
   return `add${type.charAt(0).toUpperCase() + type.slice(1)}Series`
 }
 
-// Lightweight Charts™ instances are stored as normal JS variables
-// If you need to use a ref then it is recommended that you use `shallowRef` instead
+// Lightweight Charts instances are stored as normal JS variables
 let series: ISeriesApi<any> | null
 let chart: IChartApi | null
 
@@ -65,7 +64,6 @@ const addSeriesAndData = (props: PropDef) => {
 }
 
 onMounted(() => {
-  // Create the Lightweight Charts Instance using the container ref.
   chart = createChart(chartContainer.value, props.chartOptions)
 
   addSeriesAndData(props)
@@ -96,17 +94,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', resizeHandler)
 })
 
-/*
- * Watch for changes to any of the component properties.
-
- * If an options property is changed then we will apply those options
- * on top of any existing options previously set (since we are using the
- * `applyOptions` method).
- *
- * If there is a change to the chart type, then the existing series is removed
- * and the new series is created, and assigned the data.
- *
- */
 watch(
   () => props.autosize,
   (enabled) => {

@@ -18,9 +18,18 @@ import { genSeededData } from '@/api/generator'
  * @returns {Array} sample data
  */
 
+const props = defineProps<{
+  myData: CharacterData[]
+}>()
 
 const data = ref(genSeededData(true))
 
+watch(
+  () => props.myData,
+  () => {
+    data.value = props.myData
+  }
+)
 
 const chartOptions = ref({})
 
