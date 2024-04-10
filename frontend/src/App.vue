@@ -4,6 +4,7 @@ import FormView from './components/FormView.vue'
 import HeaderView from './components/HeaderView.vue'
 import { provide, reactive, ref, watch } from 'vue'
 import type { ChartResponse } from './lib/utils'
+import { genSeededData } from './api/generator'
 
 const isDarkMode = ref(false)
 
@@ -19,6 +20,8 @@ const chartData = ref<ChartResponse[] | null>(null)
 
 const onChartData = (data: ChartResponse[]) => {
   chartData.value = data
+  // console.log('Parent Data: ', data)
+  // console.log('Parent Generated Data: ', genSeededData(true))
 }
 </script>
 
@@ -29,6 +32,7 @@ const onChartData = (data: ChartResponse[]) => {
     </div>
     <div class="pt-14 w-full min-h-screen">
       <FormView v-model:isLoading="isChartLoading" @onChartData="onChartData" />
+      <!-- <RenderChart :myData="chartData" /> -->
       <RenderChart />
     </div>
   </div>

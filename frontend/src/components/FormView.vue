@@ -1,10 +1,30 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import InputComp from './ui/InputComp.vue'
 import SelectComp from './ui/SelectComp.vue'
 import ButtonComp from './ui/ButtonComp.vue'
-import type { ChartResponse } from '@/lib/utils';
+import type { ChartResponse } from '@/lib/utils'
 
+// state management
+const props = defineProps<{
+  isLoading: boolean
+}>()
+
+const emit = defineEmits<{
+  onChartData: [payload: ChartResponse[]]
+  'update:isLoading': [payload: boolean]
+}>()
+
+const isLoading = computed({
+  get() {
+    return props.isLoading
+  },
+  set(newValue) {
+    emit('update:isLoading', newValue)
+  }
+})
+
+// -- form logic
 const formData = reactive({
   symbol: {
     value: '',
@@ -16,58 +36,55 @@ const formData = reactive({
   }
 })
 
-const props = defineProps<{
-    isLoading: boolean
-}>()
-
-const emit = defineEmits<{
-  onChartData: [payload: ChartResponse[]],
-  'update:isLoading': [payload: boolean]
-}>()
-
-// code like useVModel()
-const isLoading = computed({
-    get() {
-        return props.isLoading
-    },
-    set(newValue) {
-        emit('update:isLoading', newValue)
-    }
-})
-
-type FormData = {
+export type FormData = {
   [K in keyof typeof formData]: string
 }
 
+// submitting and data fetching
+const validateForm = () => {
+  let valid = true
+  if (!formData.period.value) {
+    formData.period.errorMsg = 'Please select an period'
+    valid = false
+  }
+  if (!formData.symbol.value) {
+    formData.symbol.errorMsg = 'Required'
+    valid = false
+  } else if (formData.symbol.value.length > 5 || formData.symbol.value.length < 2) {
+    formData.symbol.errorMsg = 'symbol lenght must be between 2 & 5.'
+  } else if (/[^a-zA-Z0-9]/.test(formData.symbol.value)) {
+    formData.symbol.errorMsg = 'symbol should not have special characters.'
+  }
+  return valid
+}
 
+const serverError = ref('')
 
-async function fetchData(data: typeof formData) {
-  formData.symbol.errorMsg = ''
+const submitForm = async () => {
+  if (!validateForm()) {
+    return
+  }
+
   formData.period.errorMsg = ''
   isLoading.value = true
 
-  console.log(formData.period)
-
   try {
-    const reponseData: ChartResponse[] = await fetch(
-      `http://localhost:8080/api/search?symbol=${data.symbol.value}&period=${data.period.value}`
-    ).then((r) => r.json())
+    const response = await fetch(
+      `${import.meta.env.VITE_API_IP}/api/search?symbol=${formData.symbol.value}&period=${formData.period.value}`
+    )
 
-    if (!reponseData) {
-      return null
+    const responseData = await response.json()
+
+    if (!response.ok) {
+      throw new Error(responseData.message)
     }
 
-    console.log(reponseData)
-    emit('onChartData', reponseData)
-  } catch (err) {
-    // error.value = err.toString()
+    emit('onChartData', responseData as ChartResponse[])
+  } catch (err: any) {
+    serverError.value = err?.message ?? 'server error'
   } finally {
     isLoading.value = false
   }
-}
-
-const submitForm = (e: any) => {
-  fetchData(formData)
 }
 
 const period = [
@@ -79,19 +96,50 @@ const period = [
 <template>
   <form
     @submit.prevent="submitForm"
-    class="py-2 flex gap-5 max-w-3xl items-center m-auto flex-wrap justify-center"
+    class="py-2 px-6 flex gap-5 max-w-3xl items-center m-auto flex-wrap justify-center"
   >
-    <div class="w-60 p-4 flex-grow">
-      <label> Symbol: </label>
-      <InputComp placeholder="Enter symbol" name="symbol" v-model="formData.symbol.value" />
-      <span> {{ formData.symbol.errorMsg }}</span>
+    <div class="w-60 flex-grow">
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Symbol:
+      </label>
+      <InputComp
+        class="uppercase"
+        placeholder="Enter symbol"
+        name="symbol"
+        v-model="formData.symbol.value"
+        @input="formData.symbol.errorMsg = ''"
+      />
+      <span class="min-h-[18px] inline-block text-[0.8rem] font-medium text-destructive">
+        {{ formData.symbol.errorMsg }}</span
+      >
     </div>
     <div class="w-60 flex-grow">
-      <label> Period: </label>
-      <SelectComp placeholder="Select period" v-model="formData.period.value" :options="period" />
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Period:
+      </label>
+
+      <SelectComp
+        placeholder="Select period"
+        v-model="formData.period.value"
+        :options="period"
+        @update:modelValue="formData.period.errorMsg = ''"
+      />
+      <span class="min-h-[18px] inline-block text-[0.8rem] font-medium text-destructive">
+        {{ formData.period.errorMsg }}</span
+      >
     </div>
     <div class="flex-grow max-w-40 align-middle">
       <ButtonComp type="submit"> Search </ButtonComp>
     </div>
   </form>
+  <div
+    v-if="serverError"
+    class="flex text-[0.8rem] mt-[-18px] font-medium text-destructive justify-center"
+  >
+    {{ serverError }}
+  </div>
 </template>

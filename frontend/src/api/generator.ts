@@ -3,22 +3,30 @@
  * Generated based on seed. so each time will get same data for same input.
  */
 export function genSeededData(ohlc: boolean) {
-  const rand = new Random(hash('hello 👋'))
+  const rand = new Random(hash(new Date().toISOString()))
   return genRandom(ohlc, rand)
 }
 
 export function genRandom(ohlc: boolean, rand: Random) {
-  const randomFactor = 25 + rand.random() * 25
+  const randomFactor = 8 + rand.random() * 25
   function samplePoint(i: number) {
-    return (
+    const op =
       i *
         (0.5 +
-          Math.sin(i / 10) * 0.2 +
-          Math.sin(i / 20) * 0.4 +
-          Math.sin(i / randomFactor) * 0.8 +
-          Math.sin(i / 500) * 0.5) +
+          Math.sin(i / randomFactor) * 0.5 ) +
       200
-    )
+    console.log(i, ' : ', op)
+    return op
+
+
+    // const op =
+    //   i *
+    //     (0.5 +
+    //       Math.sin(i / 10) * 0.2 +
+    //       Math.sin(i / 20) * 0.4 +
+    //       Math.sin(i / randomFactor) * 0.8 +
+    //       Math.sin(i / 500) * 0.5) +
+    //   200
   }
 
   const res = []

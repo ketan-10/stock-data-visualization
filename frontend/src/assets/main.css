@@ -4,3 +4,7 @@ svg {
   max-height: 100%;
   max-width: 100%;
 }
+
+*::placeholder { /* Recent browsers */
+  text-transform: none;
+}

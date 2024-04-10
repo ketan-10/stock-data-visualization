@@ -3,7 +3,7 @@
 // eslint-disable-next-line no-undef
 const plugin = require('tailwindcss/plugin')
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,vue}'],
+  content: ['./index.html', './src/**/*.{js,ts,vue,svg}'],
   // darkMode: ['selector'],
   darkMode: ['class'],
   safelist: ['dark'],
