@@ -2,51 +2,50 @@
  * Instead of storing huge dummy json
  * Generated based on seed. so each time will get same data for same input.
  */
-export function genSeededData(symbol: string, period: string) {
-  const rand = new Random(hash(symbol) & hash(period));
-  return genRandom(true, rand)
+export function genSeededData(symbol: string, period: "daily" | "hourly") {
+  const key = hash(symbol) & hash(period);
+  const rand = new Random(key);
+  return genRandom(rand, period);
 }
 
-export function genRandom(ohlc: boolean, rand: Random) {
+export function genRandom(rand: Random, period: "daily" | "hourly") {
   const randomFactor = 25 + rand.random() * 25;
   function samplePoint(i: number) {
     return (
       i *
         (0.5 +
-          Math.sin(i / 10) * 0.2 +
-          Math.sin(i / 20) * 0.4 +
-          Math.sin(i / randomFactor) * 0.8 +
-          Math.sin(i / 500) * 0.5) +
+          Math.sin(i / 20) * 0.2 +
+          Math.sin(i / 500) * 0.2 + // weitht
+          Math.sin(i / randomFactor) * 0.5) +
       200
     );
   }
 
   const res = [];
-  const date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0, 0));
-  const numberOfPoints = ohlc ? 100 : 500;
+  const date = new Date(Date.UTC(2024, 0, 1, 0, 0, 0, 0));
+  const numberOfPoints = 300;
   for (let i = 0; i < numberOfPoints; ++i) {
     const time = date.getTime() / 1000;
     const value = samplePoint(i);
-    if (ohlc) {
-      const randomRanges = [-1 * rand.random(), rand.random(), rand.random()].map(
-        (i) => i * 10
-      );
-      const sign = Math.sin(rand.random() - 0.5);
-      res.push({
-        time,
-        low: value + randomRanges[0],
-        high: value + randomRanges[1],
-        open: value + sign * randomRanges[2],
-        close: samplePoint(i + 1),
-      });
-    } else {
-      res.push({
-        time,
-        value,
-      });
-    }
 
-    date.setUTCDate(date.getUTCDate() + 1);
+    const randomRanges = [-1 * rand.random(), rand.random(), rand.random()].map(
+      (i) => i * 10
+    );
+    const sign = Math.sin(rand.random() - 0.5);
+    res.push({
+      time,
+      low: value + randomRanges[0],
+      high: value + randomRanges[1],
+      open: value + sign * randomRanges[2],
+      close: samplePoint(i + 1),
+      value,
+    });
+
+    if(period == 'daily') {
+        date.setUTCDate(date.getUTCDate() + 1);
+    } else {
+        date.setUTCHours(date.getUTCHours() + 1);
+    }
   }
 
   return res;

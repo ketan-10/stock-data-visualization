@@ -29,12 +29,13 @@ const onChartData = (data: ChartResponse[]) => {
     </div>
     <div class="pt-14 w-full min-h-screen flex flex-col">
       <FormView v-model:isLoading="isChartLoading" @onChartData="onChartData" />
-      <div class="w-full md:w-80 self-center mb-5">
-        <TabComp v-model="currentChart" :tabs="TABS" />
-      </div>
-      <div v-if="chartData.length">
-        <RenderChart :serverData="chartData" :chartType="currentChart" />
-      </div>
+      <div v-if="isChartLoading" id="spinner"></div>
+      <template v-else>
+        <div class="w-full md:w-80 self-center mb-5">
+          <TabComp v-if="chartData.length" v-model="currentChart" :tabs="TABS" />
+        </div>
+        <RenderChart v-if="chartData.length" :serverData="chartData" :chartType="currentChart" />
+      </template>
     </div>
   </div>
 </template>

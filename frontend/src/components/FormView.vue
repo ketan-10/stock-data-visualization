@@ -51,8 +51,10 @@ const validateForm = () => {
     valid = false
   } else if (formData.symbol.value.length > 5 || formData.symbol.value.length < 2) {
     formData.symbol.errorMsg = 'symbol lenght must be between 2 & 5.'
+    valid = false
   } else if (/[^a-zA-Z0-9]/.test(formData.symbol.value)) {
     formData.symbol.errorMsg = 'symbol should not have special characters.'
+    valid = false
   }
   return valid
 }
@@ -65,6 +67,9 @@ const submitForm = async () => {
   }
 
   formData.period.errorMsg = ''
+  formData.symbol.errorMsg = ''
+  serverError.value = ''
+
   isLoading.value = true
 
   try {
@@ -80,7 +85,7 @@ const submitForm = async () => {
 
     emit('onChartData', responseData as ChartResponse[])
   } catch (err: any) {
-    serverError.value = err?.message ?? 'server error'
+    serverError.value = err?.message ?? 'Server error'
   } finally {
     isLoading.value = false
   }

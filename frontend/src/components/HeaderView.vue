@@ -22,9 +22,14 @@ watch(isDarkMode, (lightsPlz) => {
   <div class="bg-primary-foreground flex w-full shadow align-middle">
     <div class="flex justify-between w-full items-center p-3">
       <div class="text-xl pl-4">Stocks visualizer</div>
-      <div class="flex gap-3">
+      <div class="flex gap-5">
         <div class="h-8 top-5 left-5 self-center w-10">
-          <div class="object-contain h-full w-full" v-html="Github"></div>
+          <a
+            class="object-contain h-full w-full cursor-pointer"
+            v-html="Github"
+            href="https://github.com/ketan-10/stock-data-visualization"
+            target="_blank"
+          ></a>
         </div>
         <div class="self-center leading-none">
           <Switch
