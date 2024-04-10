@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import RenderChart from './components/charts/RenderChart.vue'
-import FormView from './components/FormView.vue';
+import FormView from './components/FormView.vue'
 import HeaderView from './components/HeaderView.vue'
 import { provide, reactive, ref, watch } from 'vue'
+import type { ChartResponse } from './lib/utils'
 
 const isDarkMode = ref(false)
 
@@ -12,6 +13,13 @@ watch(isDarkMode, (newMode) => {
   console.log(newMode)
 })
 
+const isChartLoading = ref(false)
+
+const chartData = ref<ChartResponse[] | null>(null)
+
+const onChartData = (data: ChartResponse[]) => {
+  chartData.value = data
+}
 </script>
 
 <template>
@@ -20,7 +28,7 @@ watch(isDarkMode, (newMode) => {
       <HeaderView />
     </div>
     <div class="pt-14 w-full min-h-screen">
-      <FormView/>
+      <FormView v-model:isLoading="isChartLoading" @onChartData="onChartData" />
       <RenderChart />
     </div>
   </div>

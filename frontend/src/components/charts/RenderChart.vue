@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 // This starter template is using Vue 3  SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { ref } from 'vue'
@@ -10,7 +10,7 @@ import { ref } from 'vue'
  */
 // import LWChart from './components/composition-api/LWChart.vue';
 import LWChart from './LWChart.vue'
-import {genSeededData} from '@/api/generator'
+import { genSeededData } from '@/api/generator'
 
 /**
  * Generates sample data for the Lightweight Charts™ example
@@ -18,6 +18,9 @@ import {genSeededData} from '@/api/generator'
  * @returns {Array} sample data
  */
 
+const props = defineProps<{
+  myData: CharacterData[]
+}>()
 
 const chartOptions = ref({})
 const data = ref(genSeededData(false))

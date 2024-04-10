@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import InputComp from './ui/InputComp.vue';
-import SelectComp from './ui/SelectComp.vue';
-import ButtonComp from './ui/ButtonComp.vue';
+import { computed, reactive } from 'vue'
+import InputComp from './ui/InputComp.vue'
+import SelectComp from './ui/SelectComp.vue'
+import ButtonComp from './ui/ButtonComp.vue'
+import type { ChartResponse } from '@/lib/utils';
 
 const formData = reactive({
   symbol: {
@@ -15,9 +16,58 @@ const formData = reactive({
   }
 })
 
-const submitForm = (e) => {
-  formData.symbol.errorMsg = 'failed'
-  formData.period.value = 'hourly'
+const props = defineProps<{
+    isLoading: boolean
+}>()
+
+const emit = defineEmits<{
+  onChartData: [payload: ChartResponse[]],
+  'update:isLoading': [payload: boolean]
+}>()
+
+// code like useVModel()
+const isLoading = computed({
+    get() {
+        return props.isLoading
+    },
+    set(newValue) {
+        emit('update:isLoading', newValue)
+    }
+})
+
+type FormData = {
+  [K in keyof typeof formData]: string
+}
+
+
+
+async function fetchData(data: typeof formData) {
+  formData.symbol.errorMsg = ''
+  formData.period.errorMsg = ''
+  isLoading.value = true
+
+  console.log(formData.period)
+
+  try {
+    const reponseData: ChartResponse[] = await fetch(
+      `http://localhost:8080/api/search?symbol=${data.symbol.value}&period=${data.period.value}`
+    ).then((r) => r.json())
+
+    if (!reponseData) {
+      return null
+    }
+
+    console.log(reponseData)
+    emit('onChartData', reponseData)
+  } catch (err) {
+    // error.value = err.toString()
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const submitForm = (e: any) => {
+  fetchData(formData)
 }
 
 const period = [

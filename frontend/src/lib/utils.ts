@@ -21,3 +21,11 @@ export type ClassArray = ClassValue[]
 export function cn(...inputs: ClassArray) {
   return twMerge(cx(inputs))
 }
+
+export type ChartResponse = {
+    time: number
+    low: number
+    open: number
+    close: number
+  }
+  

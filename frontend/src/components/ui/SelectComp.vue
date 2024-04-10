@@ -1,5 +1,5 @@
 
-<script setup>
+<script setup lang="ts">
 import {computed} from "vue";
 import {
   Listbox,
@@ -8,15 +8,15 @@ import {
   ListboxOptions,
 } from "@headlessui/vue";
  
-const props = defineProps({
-  options: Array,
-  modelValue: [String, Number, Array],
-  placeholder: {
-    type: String,
-    default: "Select option",
-  },
-  multiple: Boolean,
-  error: String
+
+const props = withDefaults(defineProps<{
+  modelValue: string |  Number,
+  options: {label: string, value: string}[],
+  placeholder?: string,
+  multiple?: boolean,
+  error?: string
+}>(), {
+  placeholder: "Select option"
 });
  
 const emit = defineEmits(["update:modelValue"]);
