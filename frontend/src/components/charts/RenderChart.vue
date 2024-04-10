@@ -1,33 +1,20 @@
 <script setup lang="ts">
-// This starter template is using Vue 3  SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { ref, watch } from 'vue'
 
-/*
- * There are example components in both API styles: Options API, and Composition API
- *
- * Select your preferred style from the imports below:
- */
-// import LWChart from './components/composition-api/LWChart.vue';
 import LWChart from './LWChart.vue'
 import { genSeededData } from '@/api/generator'
 
-/**
- * Generates sample data for the Lightweight Charts™ example
- * @param  {Boolean} ohlc Whether generated dat should include open, high, low, and close values
- * @returns {Array} sample data
- */
-
 const props = defineProps<{
-  myData: CharacterData[]
+  serverData: CharacterData[]
 }>()
 
-const data = ref(genSeededData(true))
+const data = ref([] as CharacterData[])
 
 watch(
-  () => props.myData,
+  () => props.serverData,
   () => {
-    data.value = props.myData
+    data.value = props.serverData
+    console.log('I have: ', props.serverData)
   }
 )
 
@@ -92,7 +79,7 @@ const changeColors = () => {
 const changeData = () => {
   const candlestickTypeData = ['candlestick', 'bar'].includes(chartType.value)
   const newData = genSeededData(candlestickTypeData)
-  data.value = newData
+  data = newData
   if (chartType.value === 'baseline') {
     const average =
       newData.reduce((s, c) => {
@@ -103,14 +90,7 @@ const changeData = () => {
 }
 
 const changeType = () => {
-  const types = [
-    'line'
-    // 'area',
-    // 'baseline',
-    // 'histogram',
-    // 'candlestick'
-    // 'bar',
-  ].filter((t) => t !== chartType.value)
+  const types = ['line', 'candlestick'].filter((t) => t !== chartType.value)
   const randIndex = Math.round(Math.random() * (types.length - 1))
   chartType.value = types[randIndex]
   changeData()
@@ -121,7 +101,7 @@ const changeType = () => {
 </script>
 
 <template>
-  <div class="chart-container">
+  <div class="chart-container h-[70vh] max-h-80">
     <LWChart
       :type="chartType"
       :data="data"

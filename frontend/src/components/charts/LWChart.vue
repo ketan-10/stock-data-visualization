@@ -7,7 +7,6 @@ import {
   type HorzScaleOptions,
   type DeepPartial,
   type ChartOptions,
-  type SeriesOptions,
   type PriceScaleOptions
 } from 'lightweight-charts'
 
@@ -16,7 +15,7 @@ type PropDef = {
   data: any[]
   autosize: Boolean
   chartOptions?: DeepPartial<ChartOptions>
-  seriesOptions?: DeepPartial<SeriesOptions<any>>
+  seriesOptions?: any
   timeScaleOptions?: DeepPartial<HorzScaleOptions>
   priceScaleOptions?: DeepPartial<PriceScaleOptions>
 }

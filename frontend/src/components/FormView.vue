@@ -96,7 +96,7 @@ const period = [
 <template>
   <form
     @submit.prevent="submitForm"
-    class="py-2 px-6 flex gap-5 max-w-3xl items-center m-auto flex-wrap justify-center"
+    class="py-2 px-6 flex gap-5 max-w-3xl items-center self-center flex-wrap justify-center"
   >
     <div class="w-60 flex-grow">
       <label
