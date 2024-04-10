@@ -1,12 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import {
-  Listbox,
-  ListboxLabel,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption
-} from '@headlessui/vue'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 
 const people = [{ name: 'Daily' }, { name: 'Hourly' }]
 const selectedPerson = ref(people[0])

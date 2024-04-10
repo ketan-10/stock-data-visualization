@@ -5,11 +5,11 @@ import SelectComp from './components/SelectComp.vue'
 import HeaderComp from './components/HeaderComp.vue'
 import { provide, ref, watch } from 'vue'
 
-const isLightMode = ref(true)
+const isDarkMode = ref(false)
 
-provide('isLightMode', isLightMode);
+provide('isDarkMode', isDarkMode)
 
-watch(isLightMode, (newMode) => {
+watch(isDarkMode, (newMode) => {
   console.log(newMode)
 })
 </script>
@@ -20,7 +20,6 @@ watch(isLightMode, (newMode) => {
       <HeaderComp />
     </div>
     <div class="pt-14 w-full min-h-screen">
-      <h1 class="text-3xl">Welcome to {{ isLightMode }}</h1>
       <SelectComp />
       <div class="flex">
         <InputComp />
