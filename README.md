@@ -1,6 +1,7 @@
 # Stock data visualizer
 
-- [🟢 Live](www.ketan.link/stock-data-visualization) 
+- [🟢 Live](www.ketan.link/stock-data-visualization) [hosting and CI/CD for frontend with github-pages]
+- [Backend](https://hosted-function.vercel.app/) (deployed using [vercel](https://vercel.com/))
 
 ## Very lightweight
 -  Project has following 3 dependencies   
@@ -12,31 +13,31 @@
 },
 ```
 - As the name suggest [`@headlessui/vue`](https://headlessui.com/) is a headless ui library. 
-- I am big fan of headless libraries. as they do not render anything visual on screen. That way we get pixel perfect control, at the expense of writing your own components. <br>
+- I am a big fan of headless libraries. as they do not render anything visual on screen. That way we get pixel-perfect control, at the expense of writing your own components. <br>
 - Another example of headless ui library is [radix-vue](https://www.radix-vue.com/) all of them are very lightweight.
 - Whole [dist directory](https://github.com/ketan-10/stock-data-visualization/tree/gh-pages) including all assets is 280kb (without zipping)
 
 ## Tech stack.
-- I am pretty happy with the tech stack i decided on. 
-  (I would have used vee-validate for form validation, if I would do it again)
+**I am pretty happy with the tech stack I decided on. (I would have used vee-validate for form validation if I did it again)**
   1. Vuejs
-  1. Typescript
-  1. lightweight-charts
-  1. Tailwind
-  1. headlessui
-  1. vite.js
-  1. eslint and prettier
+  2. Typescript
+  3. lightweight-charts
+  4. Tailwind
+  5. headlessui
+  6. vite.js
+  7. eslint and prettier
+  8. Fastify and typescript for the backend.
 
 ## screenshots
 
-| Dark Mode  | Light Mode |
+| Dark Mode  | Light Mode | 
 | ---------- | ----------- |
-|  |  |
+| ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/79cb63a4-2ba5-4e90-be29-65c8e72dec31) | ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/0ab2469f-d0d6-4090-a78c-5b1348239922) |
 
 
-| Desktop View  | Mobile View |
+| Tablet View  | Mobile View |
 | ---------- | ----------- |
-|  |  |
+| ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/d2091be4-948b-4189-98f2-5dc2f68345e1) | ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/3fca00ee-c813-4c1a-93b6-25b92adb0fdd) |
 
 
 
