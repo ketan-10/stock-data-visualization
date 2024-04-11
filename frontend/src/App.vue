@@ -31,7 +31,7 @@ const onChartData = (data: ChartResponse[]) => {
       <FormView v-model:isLoading="isChartLoading" @onChartData="onChartData" />
       <div v-if="isChartLoading" id="spinner"></div>
       <template v-else>
-        <div class="w-full md:w-80 self-center mb-5">
+        <div class="w-full md:w-80 self-center mb-5 px-5">
           <TabComp v-if="chartData.length" v-model="currentChart" :tabs="TABS" />
         </div>
         <RenderChart v-if="chartData.length" :serverData="chartData" :chartType="currentChart" />
