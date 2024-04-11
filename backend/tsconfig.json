@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "sourceMap": true,
     "target": "esnext",
     "module": "Commonjs",
     "esModuleInterop": true,
@@ -10,7 +9,6 @@
     "skipLibCheck": true
   },
   "include": [
-    "./api/*.ts",
     "./*.js",
     "src/**/*.ts",
     "test/**/*.ts",
