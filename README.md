@@ -13,7 +13,7 @@
 },
 ```
 - As the name suggest [`@headlessui/vue`](https://headlessui.com/) is a headless ui library. 
-- I am a big fan of headless libraries. as they do not render anything visual on screen. That way we get pixel-perfect control, at the expense of writing your own components. <br>
+- Headless libraries do not render anything visual on screen. That way we get pixel-perfect control, at the expense of writing your own components. <br>
 - Another example of headless ui library is [radix-vue](https://www.radix-vue.com/) all of them are very lightweight.
 - Whole [dist directory](https://github.com/ketan-10/stock-data-visualization/tree/gh-pages) including all assets is 280kb (without zipping)
 
