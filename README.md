@@ -1,6 +1,6 @@
 # Stock data visualizer
 
-- [🟢 Live](www.ketan.link/stock-data-visualization) [hosting and CI/CD for frontend with github-pages]
+- [🟢 Live](https://www.ketan.link/stock-data-visualization) [hosting and CI/CD for frontend with github-pages]
 - [Backend](https://hosted-function.vercel.app/) (deployed using [vercel](https://vercel.com/))
 
 ## Very lightweight
