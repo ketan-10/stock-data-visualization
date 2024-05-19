@@ -7,6 +7,6 @@ curl -A "Chrome/91.0.4472.124" -L "https://www.bseindia.com/download/BhavCopy/Eq
     IFS=',' read -r -a array <<< "$line" # split by comma
     touch output/${array[0]}.txt # create file if not exits
     # skip first 2 columns and print by adding comma back } append to file to start
-    printf "%s," "$1,${array[@]:2}" | sed 's/,$/\n/' | cat - "output/${array[0]}.txt" > temp && mv temp "output/${array[0]}.txt"
+    echo $(IFS=, ; echo "$1,${array[*]:2}") | cat - "output/${array[0]}.txt" > temp && mv temp "output/${array[0]}.txt"
 done;
 
