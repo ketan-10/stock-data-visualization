@@ -1,0 +1,27 @@
+name: Daily Command
+
+on:
+  schedule:
+    - cron: '30 15 * * *'
+
+jobs:
+  run-command:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run command
+      working-directory: ./cron
+      run: bash runner.sh $(date +"%y%m%d")
+
+    - name: Push changes
+      working-directory: ./cron
+      run: |
+        git config --global user.email ${{secrets.MY_EMAIL}}
+        git config --global user.name ${{secrets.MY_USERNAME}}
+        git remote set-url origin https://${{secrets.MY_PERSONAL_TOKEN_PUBLIC}}@github.com/${{github.repository}}
+        git status
+        git add output/**
+        (git commit -m "[BOT] [BHAVCOPY]" && git push) || true

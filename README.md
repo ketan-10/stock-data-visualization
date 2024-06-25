@@ -39,5 +39,4 @@
 | ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/d2091be4-948b-4189-98f2-5dc2f68345e1) | ![image](https://github.com/ketan-10/stock-data-visualization/assets/35309821/3fca00ee-c813-4c1a-93b6-25b92adb0fdd) |
 
 
-
-
+Equity.csv : `Security Code,Issuer Name,Security Id,ISIN No`
