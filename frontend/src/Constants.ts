@@ -68,7 +68,7 @@ export async function fetchStream(res: Response, callback: (res: CompanyInfo[]) 
     buffer += value
 
     const lines = buffer.split('\n')
-    const jsonOp = lines.map((l) => csvToJson(l))
+    const jsonOp = lines.slice(0, -1).map((l) => csvToJson(l))
     callback(jsonOp)
     // set buffer to last line only
     buffer = lines[lines.length - 1]
