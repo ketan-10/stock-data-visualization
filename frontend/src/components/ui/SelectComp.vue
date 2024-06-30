@@ -6,7 +6,7 @@ import ChevronIcon from '@/assets/icons/chevron-up-down.svg?raw'
 const props = withDefaults(
   defineProps<{
     modelValue: string | Number
-    options: { label: string; value: string }[]
+    options: { label: string; value: string, disable?: boolean}[]
     placeholder?: string
   }>(),
   {
@@ -61,11 +61,13 @@ const label = computed(() => {
             v-slot="{ active, selected }"
             :value="option.value"
             as="template"
+            :disabled="option.disable"
           >
             <li
               :class="[
                 active ? 'bg-amber-200 text-amber-900' : '',
-                'relative flex w-full cursor-default select-none items-center rounded-sm py-2 pl-10 pr-4 focus:bg-accent focus:text-accent-foreground'
+                'relative flex w-full cursor-default select-none items-center rounded-sm py-2 pl-10 pr-4 focus:bg-accent focus:text-accent-foreground',
+                option.disable ? 'bg-gray-300 cursor-not-allowed' : ''
               ]"
             >
               <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']">{{

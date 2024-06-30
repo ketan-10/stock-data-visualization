@@ -2,6 +2,8 @@
 import type { HTMLAttributes } from 'vue'
 
 // using component v-model patten https://vuejs.org/guide/components/v-model.html
+// using computed : https://youtu.be/qGqebwUxWrw?si=4k5OuLQEOeKKUGWp
+
 const props = defineProps<{
   modelValue?: string | number
   class?: HTMLAttributes['class']

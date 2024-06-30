@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import InputComp from './ui/InputComp.vue'
+import ComboboxComp from './ui/ComboboxComp.vue'
 import SelectComp from './ui/SelectComp.vue'
 import ButtonComp from './ui/ButtonComp.vue'
-import type { ChartResponse } from '@/Constants'
+import { dataCsvToJson, type ChartResponse } from '@/Constants'
 
 const props = defineProps<{
   isLoading: boolean
@@ -49,7 +50,7 @@ const validateForm = () => {
   if (!formData.symbol.value) {
     formData.symbol.errorMsg = 'Required'
     valid = false
-  } else if (formData.symbol.value.length > 5 || formData.symbol.value.length < 2) {
+  } else if (formData.symbol.value.length > 10 || formData.symbol.value.length < 2) {
     formData.symbol.errorMsg = 'symbol lenght must be between 2 & 5.'
     valid = false
   } else if (/[^a-zA-Z0-9]/.test(formData.symbol.value)) {
@@ -73,11 +74,9 @@ const submitForm = async () => {
   isLoading.value = true
 
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_IP}/api/search?symbol=${formData.symbol.value}&period=${formData.period.value}`
-    )
 
-    const responseData = await response.json()
+    const response = await fetch(`https://raw.githubusercontent.com/ketan-10/stock-data-visualization/master/cron/output/${formData.symbol.value}.csv`)
+    const responseData = dataCsvToJson(await response.text())
 
     if (!response.ok) {
       throw new Error(responseData.message)
@@ -93,7 +92,7 @@ const submitForm = async () => {
 
 const period = [
   { value: 'daily', label: 'Daily' },
-  { value: 'hourly', label: 'Hourly' }
+  { value: 'hourly', label: 'Hourly' , disable: true }
 ]
 </script>
 
@@ -108,12 +107,16 @@ const period = [
       >
         Symbol:
       </label>
-      <InputComp
+      <!-- <InputComp
         class="uppercase"
         placeholder="Enter symbol"
         name="symbol"
         v-model="formData.symbol.value"
         @input="formData.symbol.errorMsg = ''"
+      /> -->
+      <ComboboxComp 
+        @update="(v) => formData.symbol.value = v"
+        @change="formData.symbol.errorMsg = ''"
       />
       <span class="min-h-[18px] inline-block text-[0.8rem] font-medium text-destructive">
         {{ formData.symbol.errorMsg }}</span
