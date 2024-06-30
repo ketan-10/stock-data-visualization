@@ -72,7 +72,7 @@ let filteredCompany = computed(() =>
     <div class="relative mt-1">
       <div class="flex h-10 w-full items-center">
         <ComboboxInput
-          class="rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed w-full"
+          class="rounded-md border border-input bg-background pl-3 pr-8 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed w-full"
           :displayValue="(company: any) => open ? '' : company?.name"
           @change="query = $event.target.value"
           placeholder="Search company name"

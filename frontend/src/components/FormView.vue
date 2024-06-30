@@ -23,6 +23,11 @@ const isLoading = computed({
   }
 })
 
+const period = [
+  { value: 'daily', label: 'Daily' },
+  { value: 'hourly', label: 'Hourly', disable: true }
+]
+
 // form logic
 const formData = reactive({
   symbol: {
@@ -30,7 +35,7 @@ const formData = reactive({
     errorMsg: ''
   },
   period: {
-    value: '',
+    value: 'daily',
     errorMsg: ''
   }
 })
@@ -89,11 +94,6 @@ const submitForm = async () => {
     isLoading.value = false
   }
 }
-
-const period = [
-  { value: 'daily', label: 'Daily' },
-  { value: 'hourly', label: 'Hourly', disable: true }
-]
 </script>
 
 <template>
