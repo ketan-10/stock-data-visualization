@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import InputComp from './ui/InputComp.vue'
 import ComboboxComp from './ui/ComboboxComp.vue'
 import SelectComp from './ui/SelectComp.vue'
 import ButtonComp from './ui/ButtonComp.vue'
@@ -74,12 +73,13 @@ const submitForm = async () => {
   isLoading.value = true
 
   try {
-
-    const response = await fetch(`https://raw.githubusercontent.com/ketan-10/stock-data-visualization/master/cron/output/${formData.symbol.value}.csv`)
+    const response = await fetch(
+      `${import.meta.env.VITE_API_IP}/master/cron/output/${formData.symbol.value}.csv`
+    )
     const responseData = dataCsvToJson(await response.text())
 
     if (!response.ok) {
-      throw new Error(responseData.message)
+      throw new Error('failed to load data')
     }
 
     emit('onChartData', responseData as ChartResponse[])
@@ -92,12 +92,13 @@ const submitForm = async () => {
 
 const period = [
   { value: 'daily', label: 'Daily' },
-  { value: 'hourly', label: 'Hourly' , disable: true }
+  { value: 'hourly', label: 'Hourly', disable: true }
 ]
 </script>
 
 <template>
   <form
+    autocomplete="off"
     @submit.prevent="submitForm"
     class="py-2 px-6 flex gap-x-5 max-w-3xl items-center self-center flex-wrap justify-center"
   >
@@ -107,16 +108,10 @@ const period = [
       >
         Symbol:
       </label>
-      <!-- <InputComp
-        class="uppercase"
-        placeholder="Enter symbol"
-        name="symbol"
-        v-model="formData.symbol.value"
-        @input="formData.symbol.errorMsg = ''"
-      /> -->
-      <ComboboxComp 
-        @update="(v) => formData.symbol.value = v"
+      <ComboboxComp
+        @update="(v) => (formData.symbol.value = v)"
         @change="formData.symbol.errorMsg = ''"
+        @errorFetching="(msg) => (serverError = msg)"
       />
       <span class="min-h-[18px] inline-block text-[0.8rem] font-medium text-destructive">
         {{ formData.symbol.errorMsg }}</span
