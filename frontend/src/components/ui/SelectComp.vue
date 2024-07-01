@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import ChevronIcon from '@/assets/icons/chevron-up-down.svg?raw'
+import CheckIcon from '@/assets/icons/check.svg?raw'
 
 const props = withDefaults(
   defineProps<{
@@ -36,7 +37,7 @@ const label = computed(() => {
   >
     <div class="relative mt-1">
       <ListboxButton
-        class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed"
+        class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed"
       >
         <span v-if="label" class="block truncate">{{ label }}</span>
         <span v-else class="text-gray-500">{{ props.placeholder }}</span>
@@ -75,9 +76,9 @@ const label = computed(() => {
               }}</span>
               <span
                 v-if="selected"
-                class="flex absolute inset-y-0 left-0 items-center pl-3 text-amber-600"
-              >
-                <img class="h-5 w-5" src="@/assets/icons/check.svg" />
+                class="flex absolute inset-y-0 left-0 items-center pl-3 [--check-stroke:#d97706]"
+              > 
+                <div class="h-5 w-5" v-html="CheckIcon"></div>
               </span>
             </li>
           </ListboxOption>

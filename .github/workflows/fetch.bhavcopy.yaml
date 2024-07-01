@@ -14,7 +14,7 @@ jobs:
 
     - name: Run command
       working-directory: ./cron
-      run: bash runner.sh $(date +"%y%m%d")
+      run: bash runner.sh $(date +"%d%m%y")
 
     - name: Push changes
       working-directory: ./cron

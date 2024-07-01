@@ -9,6 +9,7 @@ import {
   TransitionRoot
 } from '@headlessui/vue'
 import ChevronIcon from '@/assets/icons/chevron-up-down.svg?raw'
+import CheckIcon from '@/assets/icons/check.svg?raw'
 import { fetchStream, type CompanyInfo } from '@/Constants'
 
 const selectedCompany = ref<CompanyInfo>()
@@ -72,7 +73,7 @@ let filteredCompany = computed(() =>
     <div class="relative mt-1">
       <div class="flex h-10 w-full items-center">
         <ComboboxInput
-          class="rounded-md border border-input bg-background pl-3 pr-8 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed w-full"
+          class="rounded-md border border-input bg-background pl-3 pr-8 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed w-full"
           :displayValue="(company: any) => open ? '' : company?.name"
           @change="query = $event.target.value"
           placeholder="Search company name"
@@ -125,7 +126,8 @@ let filteredCompany = computed(() =>
                 class="absolute inset-y-0 left-0 flex items-center pl-3"
                 :class="{ 'text-white': active, 'text-amber-600': !active }"
               >
-                <img class="h-5 w-5" src="@/assets/icons/check.svg" />
+                <div class="h-5 w-5" v-html="CheckIcon"></div>
+                <!-- <img class="h-5 w-5" src="@/assets/icons/check.svg" /> -->
               </span>
             </li>
           </ComboboxOption>
