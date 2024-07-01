@@ -52,7 +52,7 @@ const lwChart = ref()
 </script>
 
 <template>
-  <div class="chart-container h-[60vh] min-h-36 p-5">
+  <div class="chart-container h-[60svh] min-h-56 p-5">
     <LWChart
       :type="props.chartType"
       :data="data"

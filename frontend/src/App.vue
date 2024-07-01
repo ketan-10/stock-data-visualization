@@ -27,7 +27,7 @@ const onChartData = (data: ChartResponse[]) => {
     <div class="w-full z-[9999] top-0 left-0 fixed h-14 flex">
       <HeaderView />
     </div>
-    <div class="pt-14 w-full min-h-screen flex flex-col">
+    <div class="pt-14 w-full h-[100svh] flex flex-col">
       <FormView v-model:isLoading="isChartLoading" @onChartData="onChartData" />
       <div v-if="isChartLoading" id="spinner"></div>
       <template v-else>
