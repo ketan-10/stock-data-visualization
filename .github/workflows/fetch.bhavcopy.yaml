@@ -1,6 +1,7 @@
 name: Daily Command
 
 on:
+  workflow_dispatch: {}
   schedule:
     - cron: '30 15 * * *'
 
