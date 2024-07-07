@@ -28,7 +28,7 @@ export function dataCsvToJson(inputCsv: string) {
         high: parseInt(record[4]),
         low: parseInt(record[5]),
         close: parseInt(record[6]),
-        value: parseInt(record[7])
+        value: parseInt(record[9]),
       }
     })
     .filter((a) => a.time)

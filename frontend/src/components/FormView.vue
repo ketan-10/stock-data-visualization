@@ -66,10 +66,17 @@ const validateForm = () => {
 
 const serverError = ref('')
 
+// https://austingil.com/cancel-duplicate-fetch-requests-in-javascript-enhanced-forms/
+let preController: AbortController
+
 const submitForm = async () => {
   if (!validateForm()) {
     return
   }
+  if (preController) {
+    preController.abort()
+  }
+  const controller = (preController = new AbortController())
 
   formData.period.errorMsg = ''
   formData.symbol.errorMsg = ''
@@ -79,19 +86,30 @@ const submitForm = async () => {
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_IP}/master/cron/output/${formData.symbol.value}.csv`
+      `${import.meta.env.VITE_API_IP}/master/cron/output/${formData.symbol.value}.csv`,
+      { signal: controller.signal }
     )
-    const responseData = dataCsvToJson(await response.text())
+
+    const bodyText = await response.text()
+
+    // everything bellow should be synchronous.
+    // to avoid race condition with AbortController
+    // As if we await here and someone change input in between. there might be flash of old data.
+    const responseData = dataCsvToJson(bodyText)
 
     if (!response.ok) {
       throw new Error('failed to load data')
     }
 
+    isLoading.value = false
     emit('onChartData', responseData as ChartResponse[])
   } catch (err: any) {
-    serverError.value = err?.message ?? 'Server error'
-  } finally {
-    isLoading.value = false
+    if (err?.name !== 'AbortError') {
+      serverError.value = err?.message ?? 'Server error'
+      isLoading.value = false
+    } else {
+      console.log('Request already Aborted.')
+    }
   }
 }
 </script>
@@ -100,16 +118,21 @@ const submitForm = async () => {
   <form
     autocomplete="off"
     @submit.prevent="submitForm"
-    class="py-2 px-6 flex gap-x-5 max-w-3xl items-center self-center flex-wrap justify-center"
+    class="py-2 px-6 flex gap-x-5 w-full items-center self-center flex-wrap justify-center"
   >
-    <div class="w-60 flex-grow">
+    <div class="max-w-96 flex-grow pt-3">
       <label
         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         Symbol:
       </label>
       <ComboboxComp
-        @update="(v) => (formData.symbol.value = v)"
+        @update="
+          (v) => {
+            formData.symbol.value = v
+            submitForm()
+          }
+        "
         @change="formData.symbol.errorMsg = ''"
         @errorFetching="(msg) => (serverError = msg)"
       />
@@ -117,7 +140,7 @@ const submitForm = async () => {
         {{ formData.symbol.errorMsg }}</span
       >
     </div>
-    <div class="w-60 flex-grow">
+    <!-- <div class="w-60 flex-grow">
       <label
         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
@@ -136,7 +159,7 @@ const submitForm = async () => {
     </div>
     <div class="flex-grow max-w-40 align-middle">
       <ButtonComp type="submit"> Search </ButtonComp>
-    </div>
+    </div> -->
   </form>
   <div
     v-if="serverError"

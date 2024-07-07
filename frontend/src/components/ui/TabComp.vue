@@ -9,6 +9,16 @@ const props = defineProps<{
 defineEmits<{
   'update:modelValue': [payload: string]
 }>()
+
+const getName = (tab: string) => {
+  if (tab === 'line') {
+    return 'No of trades'
+  }
+  if (tab === 'candlestick') {
+    return 'Price'
+  }
+  return tab
+}
 </script>
 
 <template>
@@ -27,7 +37,7 @@ defineEmits<{
               : 'text-yellow-600 hover:bg-white/[0.12] hover:text-amber-900'
           ]"
         >
-          {{ category }}
+          {{ getName(category) }}
         </button>
       </Tab>
     </TabList>
